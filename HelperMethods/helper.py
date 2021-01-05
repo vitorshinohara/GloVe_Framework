@@ -34,5 +34,5 @@ def skip_signal(word_vectors):
 # Functions for dataset processing
 def process_line(line, stop_words, text_index):
     data = []
-    data = process_lyric(line[text_index], stop_words)
+    data = process_lyric(line[text_index].encode('utf-8'), stop_words)
     return data

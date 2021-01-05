@@ -1,31 +1,27 @@
 import csv, json, sys, re
 
-csvFilePath = 'dirty data high res audio player.csv'
-jsonFilePath = 'dirty data high res audio player.json'
+csvFilePath = 'dirty data wireless headphones.csv'
+jsonFilePath = 'dirty data wireless headphones.json'
 maxInt = sys.maxsize
 data = {}
 
-while True:
-    # decrease the maxInt value by factor 10 
-    # as long as the OverflowError occurs.
 
-    try:
-        csv.field_size_limit(maxInt)
-        break
-    except OverflowError:
-        maxInt = int(maxInt/10)
-
-with open(csvFilePath, 'r', encoding='utf-8') as csvFile:
+with open(csvFilePath, 'r') as csvFile:
     csvReader = csv.DictReader(csvFile)
 
     for row in csvReader:
-        for key, value in row.items():
-            data[key] = re.sub(r'[^\w\s]','',value)
+	try:
+          for key, value in row.items():
+              data[key] = re.sub(r'[^\w\s]','',value)
+              data[key] = data[key].replace('"', '')
         
 
-        with open(jsonFilePath, 'a', encoding='utf-8') as jsonFile:
-            jsonFile.write(json.dumps(data))
-            jsonFile.write('\n')
+          with open(jsonFilePath, 'a') as jsonFile:
+              jsonFile.write(json.dumps(data))
+              jsonFile.write('\n')
         
-        data = {}
+          data = {}
+        except Exception as e: 
+          print(e)
+          continue
         
