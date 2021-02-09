@@ -27,31 +27,50 @@ if __name__ == "__main__":
                 .replace(string.punctuation,'').lower().split(' '))
 
     # Thread Configuration
+    
+    iter_index = 3
+    n_slices = 4
+    
     dataset_lines = open(opt.input, 'r').readlines()
     dataset = [json.loads(line) for line in dataset_lines]
+    
+    
+    if(int(len(dataset)/n_slices)*(iter_index+1) > len(dataset)):
+        dataset = dataset[int(len(dataset)/n_slices)*iter_index:]
+    else:
+        dataset = dataset[int(len(dataset)/n_slices)*iter_index:int(len(dataset)/n_slices)*(iter_index+1)]
+
+    
     song_number = len(dataset)
+
+    
     song_indexes = []
-    songs_per_process = int((len(dataset)/opt.cores) + 1)
+    songs_per_process = int((song_number/opt.cores) + 1)
 
     for i in range(0, song_number, int(songs_per_process)):
         song_indexes.append(i + np.array(range(songs_per_process)))
+    
     song_indexes[-1] = song_indexes[-1][song_indexes[-1]<song_number]
 
     p = Pool(opt.cores)
 
     args_distance = zip(song_indexes, [opt] * len(song_indexes))
-
-    avg_distance_results = p.map(get_avg_distance_matrix_lyrics, args_distance)
-    avg_distance = np.mean(np.concatenate(avg_distance_results))
+    #print("Computing average distance...")
+    #avg_distance_results = p.map(get_avg_distance_matrix_lyrics, args_distance)
+    #avg_distance = np.mean(np.concatenate(avg_distance_results))
+    
+    # Avg Distance Wireless Headphones = 6.539344753274841
+    avg_distance = 6.789792898807354 
     print('Average distance computed successfully')
+    print('---')
+    print(avg_distance)
+    print('---')
     print('Extracing features')
-
+    
     extraction_parameters = zip(song_indexes, [avg_distance] * len(song_indexes), [opt] * len(song_indexes))
-
     _out1 = p.map(process_dataset, (extraction_parameters))
-    output = np.concatenate(_out1)
-    print(output[0])
-    _write_output(output, opt.output)
-
+    #output = np.concatenate(_out1)
+    #print(output[0])
+    #_write_output(output, opt.output)
     elapsed_time = time.time() - start_time
     print("Elapsed time: {}".format(time.strftime("%H:%M:%S", time.gmtime(elapsed_time))))

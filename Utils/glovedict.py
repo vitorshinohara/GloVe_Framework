@@ -4,7 +4,7 @@ import string
 
 def glove_dict(path):
     d = dict()
-    f = open(path, "r")
+    f = open(path, "r", encoding="utf8")
     for line in f.readlines():
         tokens = line.split(" ")
         vector = [float(k) for k in tokens[1:]]
