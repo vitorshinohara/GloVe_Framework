@@ -55,12 +55,10 @@ if __name__ == "__main__":
     p = Pool(opt.cores)
 
     args_distance = zip(song_indexes, [opt] * len(song_indexes))
-    #print("Computing average distance...")
-    #avg_distance_results = p.map(get_avg_distance_matrix_lyrics, args_distance)
-    #avg_distance = np.mean(np.concatenate(avg_distance_results))
+    print("Computing average distance...")
+    avg_distance_results = p.map(get_avg_distance_matrix_lyrics, args_distance)
+    avg_distance = np.mean(np.concatenate(avg_distance_results))
     
-    # Avg Distance Wireless Headphones = 6.539344753274841
-    avg_distance = 6.789792898807354 
     print('Average distance computed successfully')
     print('---')
     print(avg_distance)
