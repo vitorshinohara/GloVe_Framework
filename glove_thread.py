@@ -28,17 +28,17 @@ if __name__ == "__main__":
 
     # Thread Configuration
     
-    iter_index = 3
-    n_slices = 4
+    #iter_index = 3
+    #n_slices = 4
     
     dataset_lines = open(opt.input, 'r').readlines()
     dataset = [json.loads(line) for line in dataset_lines]
     
     
-    if(int(len(dataset)/n_slices)*(iter_index+1) > len(dataset)):
-        dataset = dataset[int(len(dataset)/n_slices)*iter_index:]
-    else:
-        dataset = dataset[int(len(dataset)/n_slices)*iter_index:int(len(dataset)/n_slices)*(iter_index+1)]
+    #if(int(len(dataset)/n_slices)*(iter_index+1) > len(dataset)):
+    #    dataset = dataset[int(len(dataset)/n_slices)*iter_index:]
+    #else:
+    #    dataset = dataset[int(len(dataset)/n_slices)*iter_index:int(len(dataset)/n_slices)*(iter_index+1)]
 
     
     song_number = len(dataset)
