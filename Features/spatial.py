@@ -24,13 +24,17 @@ def get_avg_distance_matrix_lyrics(args):
     opt = args[1]
 
     distance_matrix_lyrics = []
-    dataset_lines = open(opt.input, 'r', encoding='utf-8').readlines()
+    
+    file_dataset = open(opt.input, 'r', encoding='utf-8')
+    dataset_lines = file_dataset.readlines()
+    file_dataset.close()
+
     dataset = np.array([json.loads(line) for line in dataset_lines])
     dataset = dataset[idxs]
 
     gloved = glovedict.glove_dict(opt.glove_embedding_path)
 
-    with open(opt.stop_words_path, 'r') as file:
+    with open(opt.stop_words_path, 'r', encoding="utf8") as file:
         stop_words=set(file.read().replace('\n', '').replace(string.punctuation,'').lower().split(' '))
     
     for row_idx_debug, row in enumerate(dataset):
@@ -44,7 +48,8 @@ def get_avg_distance_matrix_lyrics(args):
         signal = skip_signal(wordvec)
         
 	
-        if len(signal) > 5:
+        if len(signal) > 5 and len(signal) < 4000:
+                logging.debug("Start to process {}/{} -> Lenght: {}".format(row_idx_debug, len(dataset), len(data)) )
                 try:
                     distance_matrix_lyrics.append(paper_features.get_max_distance(scipy.spatial.distance_matrix(wordarr, wordarr)))
                 except Exception as e:
@@ -54,7 +59,7 @@ def get_avg_distance_matrix_lyrics(args):
                     
         
         with multiprocessing.Lock():
-                logging.debug("{}/{}".format(row_idx_debug, len(dataset)) )
+                logging.debug("Finished processing {}/{} -> Length: {}".format(row_idx_debug, len(dataset), len(data)) )
 
 
     if(distance_matrix_lyrics == []):

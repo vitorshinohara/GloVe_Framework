@@ -22,7 +22,7 @@ if __name__ == "__main__":
 
     gloved = glovedict.glove_dict(opt.glove_embedding_path)
 
-    with open(opt.stop_words_path, 'r') as myfile:
+    with open(opt.stop_words_path, 'r', encoding="utf8") as myfile:
         stop_words=set(myfile.read().replace('\n', '')\
                 .replace(string.punctuation,'').lower().split(' '))
 
@@ -31,7 +31,7 @@ if __name__ == "__main__":
     #iter_index = 3
     #n_slices = 4
     
-    dataset_lines = open(opt.input, 'r').readlines()
+    dataset_lines = open(opt.input, 'r', encoding="utf8").readlines()
     dataset = [json.loads(line) for line in dataset_lines]
     
     

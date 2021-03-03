@@ -97,11 +97,11 @@ def process_dataset(args):
 
     gloved = glovedict.glove_dict(opt.glove_embedding_path)
 
-    with open(opt.stop_words_path, 'r') as myfile:
+    with open(opt.stop_words_path, 'r', encoding="utf8") as myfile:
         stop_words=set(myfile.read().replace('\n', '')\
                 .replace(string.punctuation,'').lower().split(' '))
 
-    dataset_lines = open(opt.input, 'r').readlines()
+    dataset_lines = open(opt.input, 'r', encoding="utf8").readlines()
     dataset = np.array([json.loads(line) for line in dataset_lines])
     dataset = dataset[idxs]
 
