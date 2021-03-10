@@ -31,7 +31,7 @@ def process_features(dataset, stop_words, text_column, gloved, avg_distance):
         signal = skip_signal(wordvec)
 
 
-        if len(signal) > 5:
+        if len(signal) > 5 and len(signal) < 4000:
 
             try:
                 g, c = paper_features.make_graph_networkx(scipy.spatial.distance_matrix(wordarr, wordarr),'mst_mod', avg_distance)
