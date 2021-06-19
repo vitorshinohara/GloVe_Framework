@@ -2,6 +2,7 @@ import json
 import string
 import numpy as np
 import scipy
+from scipy.spatial import minkowski_distance
 import logging
 
 import multiprocessing
@@ -48,8 +49,8 @@ def get_avg_distance_matrix_lyrics(args):
         signal = skip_signal(wordvec)
         
 	
-        if len(signal) > 5 and len(signal) < 4000:
-                logging.debug("Start to process {}/{} -> Lenght: {}".format(row_idx_debug, len(dataset), len(data)) )
+        if len(signal) > 5 and len(signal) < 1000:
+                logging.debug("Start to process {}/{} -> Lenght: {}".format(row_idx_debug, len(dataset), len(data)))
                 try:
                     distance_matrix_lyrics.append(paper_features.get_max_distance(scipy.spatial.distance_matrix(wordarr, wordarr)))
                 except Exception as e:
@@ -66,3 +67,14 @@ def get_avg_distance_matrix_lyrics(args):
         return []
 
     return [np.mean(distance_matrix_lyrics)]
+
+def our_distance_matrix(x):
+    x = np.asarray(x)
+    m, k = x.shape
+
+    result = np.empty((m,m),dtype=float)  # FIXME: figure out the best dtype
+
+    for j in range(m):
+        result[:,j] = minkowski_distance(x,x[j])
+
+    return result
